@@ -10,10 +10,16 @@ TEST_CANDIDATE_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__
 TEST_ANSWER_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_data', 'answer.txt')
 
 
-def read_checkins_file():
+def read_checkins_file(condition = None):
     '''
-    read file
+    read checkins file
+
+    Argument
+        condition (String): 1.None = return all data
+                            2.known_user = return known users
+                            3.unknown_user = return unknown users
     '''
+    result = None
     input_data = {}
     with open(CHECKINS_FILE_PATH, 'r') as txt_file:
         for line in txt_file:
@@ -30,8 +36,43 @@ def read_checkins_file():
                         'location':data_list[index*2+1]
                     }) 
                 input_data.setdefault(user_name, list()).append(new_data_list)
-    return  input_data
 
+    if condition is None:
+        result = input_data
+    else:
+        result = delete_some_data(input_data, condition)
+    
+    return  result
+
+def delete_some_data(input_data, condition = "unknown_user"):
+
+    if condition != 'unknown_user' and condition != 'known_user':
+        return input_data
+
+    new_input_data = {}
+    
+    for user_name, user_data_list in input_data.items():
+        
+        if condition == "unknown_user":
+            is_add = False
+            if is_unknown(user_data_list):
+                is_add = True
+        else:
+            is_add = True
+            if is_unknown(user_data_list):
+                is_add = False      
+                         
+        if is_add:
+            new_input_data[user_name] = user_data_list
+    
+    return new_input_data
+        
+def is_unknown(user_data_list):
+    for day_data_list in user_data_list:
+        for a_data_dict in day_data_list:
+            if a_data_dict['location'] == '?':
+                return True
+    return False
 
 def read_candidate_file():
     candidate_list = []
@@ -61,9 +102,13 @@ def read_location_file():
     return location_dict
 
 if __name__ == '__main__':
-    location_dict = read_location_file()
-    pprint.pprint(location_dict)
+    # location_dict = read_location_file()
+    # pprint.pprint(location_dict)
     # candidate_list = read_candidate_file()
     # pprint.pprint(candidate_list)
     # input_data = read_checkins_file()
+    # print(len(input_data))
+    # input_data = read_checkins_file('unknown_user')
     # pprint.pprint(input_data)
+    # input_data = read_checkins_file('known_user')
+    # print(len(input_data))
