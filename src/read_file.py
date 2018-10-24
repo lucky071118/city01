@@ -112,3 +112,4 @@ if __name__ == '__main__':
     # pprint.pprint(input_data)
     # input_data = read_checkins_file('known_user')
     # print(len(input_data))
+    pass
