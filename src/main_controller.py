@@ -1,4 +1,5 @@
 import summary
+import write_file
 # import user_based_collaborative_filtering_recommendation as user_based_recommendation
 # import item_based_collaborative_filtering_recommendation as item_based_recommendation
 # import geographical_clustering_phenomenon_recommendation as geographical_recommendation
@@ -12,8 +13,8 @@ def main():
     # rank_dict['geographical clustering phenomenon'] = geographical_recommendation.recommend()
     # rank_dict['content-based filtering'] = content_based_recommendation.recommend()
     # rank_dict['popularity'] = popularity_recommendation.recommend()
-    summary.sum(rank_dict)
-
+    sum_result = summary.sum(rank_dict)
+    write_file.write_result_file(sum_result)
     
 
 if __name__ == '__main__':
