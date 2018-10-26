@@ -83,6 +83,13 @@ def read_candidate_file():
                 candidate_list.append(line)
     return candidate_list
 
+def read_known_location():
+    location_dict = read_location_file()
+    location_list = list(location_dict.keys())
+    candidate_list = read_candidate_file()
+    
+    known_location_list = [location for location in location_list if location not in candidate_list]
+    return known_location_list
 
 def read_location_file():
     location_dict = {}
@@ -112,4 +119,7 @@ if __name__ == '__main__':
     # pprint.pprint(input_data)
     # input_data = read_checkins_file('known_user')
     # print(len(input_data))
-    pass
+    # known_location_list = read_known_location()
+    # print(len(known_location_list))
+    index = known_location_list.find('3fd66200')
+    numpy[user,index]
