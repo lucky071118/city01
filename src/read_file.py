@@ -121,5 +121,6 @@ if __name__ == '__main__':
     # print(len(input_data))
     # known_location_list = read_known_location()
     # print(len(known_location_list))
-    index = known_location_list.find('3fd66200')
-    numpy[user,index]
+    # index = known_location_list.find('3fd66200')
+    # numpy[user,index]
+    pass
