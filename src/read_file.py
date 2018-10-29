@@ -1,13 +1,13 @@
 import os
 import pprint
+import configparser
 
-
-CHECKINS_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'checkins_missing.txt')
+config = configparser.ConfigParser()
+config.read('setting.config')
+READ_FILE_DIR = config['READ_FILE_DIR']
+CHECKINS_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), READ_FILE_DIR['checkins_dir'], 'checkins_missing.txt')
 LOCATION_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'loc_id_info.txt')
-CANDIDATE_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'candidate_100_places.txt')
-TEST_CHECKINS_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_data', 'checkins_missing.txt')
-TEST_CANDIDATE_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_data', 'candidate_100_places.txt')
-TEST_ANSWER_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_data', 'answer.txt')
+CANDIDATE_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), READ_FILE_DIR['candidate_dir'], 'candidate_100_places.txt')
 
 
 def read_checkins_file(condition = None):
@@ -100,8 +100,8 @@ def read_location_file():
             if line:
                 data_list = line.split()
                 data_dict['country'] = data_list[-1]
-                data_dict['latitude'] = data_list[1]
-                data_dict['longitude'] = data_list[2]
+                data_dict['latitude'] = float(data_list[1])
+                data_dict['longitude'] = float(data_list[2])
                 data_dict['type'] = ' '.join(data_list[3:-1])
                 location_dict[data_list[0]] = data_dict
             
