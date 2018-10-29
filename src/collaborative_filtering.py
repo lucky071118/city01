@@ -9,7 +9,7 @@ def recommend():
 	new_dic={}
 	unknown_dic = {}
 	known_user_data = read_file.read_checkins_file("known_user")
-	pprint.pprint("test")
+	# pprint.pprint("test")
 	unknown_user_data = read_file.read_checkins_file("unknown_user")
 	for keyname, valuename in known_user_data.items():
 		loc_list=[]
@@ -78,7 +78,7 @@ def recommend():
 			result_list.append(candidate_rank_list[i][1])
 		result[user_id] = result_list
 		
-	pprint.pprint(result["95132"])
+	# pprint.pprint(result["95132"])
 	return result
 
 
