@@ -1,20 +1,25 @@
 import os
 import collections
 import pprint
+import configparser
 
-INDEPENDENT_VARIABLE_DICT = {
-    'user-based collaborative filtering' : 1,
-    'item-based collaborative filtering' : 1,
-    'geographical clustering phenomenon' : 1,
-    'content-based filtering' : 1,
-    'popularity' : 1
-}
+config = configparser.ConfigParser()
+config.read('setting.config')
+INDEPENDENT_VARIABLE_DICT = config['PARAMETER']
+
+
+
+
+
 
 
 def sum(all_recommendation_rank_dict):
     all_user_score = compute_score(all_recommendation_rank_dict)
     sum_result = create_output_rank(all_user_score)
     return sum_result
+
+
+    
 
 def compute_score(all_recommendation_rank_dict):
     all_user_score = {}
@@ -25,7 +30,7 @@ def compute_score(all_recommendation_rank_dict):
             for index, location in enumerate(rank_list):
                 score = 100 - index
                 sum_score = sum_score_dict.get(location,0)
-                sum_score = sum_score + score * INDEPENDENT_VARIABLE_DICT[key]
+                sum_score = sum_score + score * int(INDEPENDENT_VARIABLE_DICT[key])
                 sum_score_dict[location] = sum_score
     return all_user_score
 

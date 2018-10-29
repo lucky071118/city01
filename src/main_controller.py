@@ -1,20 +1,30 @@
 import summary
 import write_file
-# import user_based_collaborative_filtering_recommendation as user_based_recommendation
-# import item_based_collaborative_filtering_recommendation as item_based_recommendation
-# import geographical_clustering_phenomenon_recommendation as geographical_recommendation
-# import content_based_filtering_recommendation as content_based_recommendation
-# import popularity_recommendation
+import model_validation
+import configparser
+import collaborative_filtering
+import home_recommendation
+import content_based_recommendation
+import popularity_recommendation
+import average_location_recommendation
+
+config = configparser.ConfigParser()
+config.read('setting.config')
+do_validation = config['VALIDATION']['do_validation']
+
 
 def main():
     rank_dict = {}
-    # rank_dict['user-based collaborative filtering'] = user_based_recommendation.recommend()
-    # rank_dict['item-based collaborative filtering'] = item_based_recommendation.recommend()
-    # rank_dict['geographical clustering phenomenon'] = geographical_recommendation.recommend()
-    # rank_dict['content-based filtering'] = content_based_recommendation.recommend()
-    # rank_dict['popularity'] = popularity_recommendation.recommend()
+    rank_dict['collaborative_filtering'] = collaborative_filtering.recommend()
+    rank_dict['home'] = home_recommendation.recommend()
+    rank_dict['content_based_filtering'] = content_based_recommendation.recommend()
+    rank_dict['popularity'] = popularity_recommendation.recommend()
+    rank_dict['average_location'] = average_location_recommendation.recommend()
     sum_result = summary.sum(rank_dict)
     write_file.write_result_file(sum_result)
+
+    if do_validation == 'yes':
+        model_validation.test_result()
     
 
 if __name__ == '__main__':
