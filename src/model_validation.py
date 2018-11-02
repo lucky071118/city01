@@ -34,13 +34,14 @@ def test_result():
     index_dict = {}
     x_list= []
     y_list = []
-    for counter_tuple in counter_list:
-        index_dict[counter_tuple[0]] = counter_tuple[1]
+    for index in range(1,101,1):
+        x_list.append(index)
+        y_list.append(0)
     
-    x_list = list(index_dict.keys())
-    x_list.sort()
-    for rank_index in x_list:
-        y_list.append(index_dict[rank_index])
+    for counter_tuple in counter_list:
+        y_list[counter_tuple[0]-1] = counter_tuple[1]
+    
+    
 
     plt.plot(x_list, y_list, color='red')
     plt.show()
