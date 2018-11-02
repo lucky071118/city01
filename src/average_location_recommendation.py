@@ -31,6 +31,7 @@ def get_average_location(unknown_user_checkins_dict, location_info_dict):
                         all_location_dict[user_name]['longitude'].append(longitude)
 
     for user_name, location_dict in all_location_dict.items():
+        # print(user_name)
         sum_latitude = sum(location_dict['latitude'])
         sum_longitude = sum(location_dict['longitude'])
         average_latitude = sum_latitude/len(location_dict['latitude'])

@@ -1,25 +1,49 @@
 import collections
 import os
 import pprint
+import configparser
 from numpy import percentile
+import matplotlib.pyplot as plt
+
+config = configparser.ConfigParser()
+config.read('setting.config')
+READ_FILE_DIR = config['READ_FILE_DIR']['file_dir']
 
 RESULT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'result.txt')
-ANSWER_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_data', 'answer.txt')
+ANSWER_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), READ_FILE_DIR, 'answer.txt')
 
 
 def test_result():
     output_result_dict, answer_dict = read_file()
-    sum_score, sum_hit, index_list = validation(output_result_dict, answer_dict)
+    index_list, user_rank_dict = validation(output_result_dict, answer_dict)
     index_counter = collections.Counter(index_list)
-    print('score',sum_score/10000)
-    print('First hit',sum_hit/100)
+    print('avg. rank index',sum(index_list)/100)
     quartiles = percentile(index_list,[25,50,75])
-    print('25',quartiles[0])
-    print('50',quartiles[1])
-    print('75',quartiles[2])
+    print('25 Q1 =',quartiles[0])
+    print('50 Q2 = ',quartiles[1])
+    print('75 Q3 = ',quartiles[2])
     print('*'*10 + 'index_counter' + '*'*10)
     print('hit rank : number of users')
-    pprint.pprint(index_counter.most_common())
+    counter_list = index_counter.most_common()
+    for counter_tuple in counter_list:
+        print('rank index = ', counter_tuple[0], end='   ')
+        print('number of people = ', counter_tuple[1], end='   ')
+        print('name = ', user_rank_dict[counter_tuple[0]])
+        
+    # pprint.pprint(counter_list)
+    index_dict = {}
+    x_list= []
+    y_list = []
+    for counter_tuple in counter_list:
+        index_dict[counter_tuple[0]] = counter_tuple[1]
+    
+    x_list = list(index_dict.keys())
+    x_list.sort()
+    for rank_index in x_list:
+        y_list.append(index_dict[rank_index])
+
+    plt.plot(x_list, y_list, color='red')
+    plt.show()
 
 def read_file():
     output_result_dict = {}
@@ -42,30 +66,24 @@ def read_file():
     return output_result_dict, answer_dict
 
 def validation(output_result_dict, answer_dict):
-    sum_score = 0
-    sum_hit = 0
     index_list = []
+    user_rank_dict ={} 
     for user_name, rank_location_list in output_result_dict.items():
         answer_location = answer_dict.get(user_name)
-        index, score, hit = get_score(answer_location, rank_location_list)
-        sum_score += score
-        sum_hit += hit
-        index_list.append(index+1)
-    return sum_score, sum_hit, index_list
+        index = get_score(answer_location, rank_location_list)
+        index_list.append(index)
+        user_rank_dict.setdefault(index,[]).append(user_name)
+    return index_list, user_rank_dict
 
 
         
 
 def get_score(answer_location, rank_location_list):
     score = 0
-    hit = 0
     for index, location in enumerate(rank_location_list):
         if location == answer_location:
-            score = 100- index
-            if index == 0:
-                hit = 1
             break
-    return index, score, hit
+    return index+1
 
 
 

@@ -6,9 +6,9 @@ import pprint
 CHECKINS_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'checkins_missing.txt')
 LOCATION_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'loc_id_info.txt')
 CANDIDATE_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'candidate_100_places.txt')
-TEST_CHECKINS_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_data', 'checkins_missing.txt')
-TEST_CANDIDATE_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_data', 'candidate_100_places.txt')
-TEST_ANSWER_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_data', 'answer.txt')
+TEST_CHECKINS_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_5_data', 'checkins_missing.txt')
+TEST_CANDIDATE_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_5_data', 'candidate_100_places.txt')
+TEST_ANSWER_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_5_data', 'answer.txt')
 
 def read_checkins_file():
     '''
@@ -57,15 +57,20 @@ def analysis_data_input_data(input_data):
 
 
 def delete_miss_data(input_data):
-    for user_data_list in input_data.values():
-        for index, day_data_list in enumerate(user_data_list):
-            new_day_data_list = [a_data_dict for a_data_dict in day_data_list if a_data_dict.get('location') != '?']
-            user_data_list[index] = new_day_data_list if new_day_data_list else None
-
+    new_input_data = {}
     for user_name, user_data_list in input_data.items():
-        input_data[user_name] = [day_data_list for day_data_list in user_data_list if day_data_list is not None]
+        if have_unknown(user_data_list) is False:
+            new_input_data[user_name] = user_data_list
+    print('new_input_data',len(new_input_data))
 
-    return input_data
+    return new_input_data
+
+def have_unknown(user_data_list):
+    for day_data_list in user_data_list:
+        for data_dict in day_data_list:
+            if data_dict.get('location') == '?':
+                return True
+    return False
             
                 
         
@@ -166,7 +171,7 @@ if __name__ == '__main__':
     input_data = read_checkins_file()
     
     unknown_user_number, before_unknown_count_dict = analysis_data_input_data(input_data)
-    delete_miss_data(input_data)
+    input_data  = delete_miss_data(input_data)
     
     location_candidate_set, answer_list = create_miss_data(input_data, unknown_user_number)
     unknown_user_number, after_unknown_count_dict = analysis_data_input_data(input_data)

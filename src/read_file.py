@@ -4,10 +4,10 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('setting.config')
-READ_FILE_DIR = config['READ_FILE_DIR']
-CHECKINS_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), READ_FILE_DIR['checkins_dir'], 'checkins_missing.txt')
+READ_FILE_DIR = config['READ_FILE_DIR']['file_dir']
+CHECKINS_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), READ_FILE_DIR, 'checkins_missing.txt')
 LOCATION_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'loc_id_info.txt')
-CANDIDATE_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), READ_FILE_DIR['candidate_dir'], 'candidate_100_places.txt')
+CANDIDATE_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), READ_FILE_DIR, 'candidate_100_places.txt')
 
 
 def read_checkins_file(condition = None):

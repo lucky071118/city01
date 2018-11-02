@@ -9,7 +9,7 @@ def recommend():
     user_home_location_dict = get_user_home(home_dict)
     candidate_location_distance_dict = compute_distance(user_home_location_dict)
     result_rank = rank_candidate_location(candidate_location_distance_dict)
-    # print(len(result_rank))
+    print('The number of users that have home',len(result_rank))
     return result_rank
 
 def get_home_location():
@@ -31,6 +31,7 @@ def get_user_home(home_dict):
         if home_location:
             
             user_home_location_dict[user_name] = home_dict[home_location]
+    # print('user_home_location_dict',len(user_home_location_dict))
     return user_home_location_dict
 
     
