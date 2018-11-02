@@ -36,11 +36,11 @@ def recommend():
 		rank_user_sim={}
 		for next_userid, next_loclist in new_dic.items():
 			count =0
-			if next_userid != "1006" and next_userid != "1437": 
-				for eachLoc in cur_loclist:
-					for com_Loc in next_loclist:
-						if(eachLoc==com_Loc):
-							count+=1
+			#if next_userid != "1006" and next_userid != "1437": 
+			for eachLoc in cur_loclist:
+				if eachLoc in next_loclist:
+					count +=1
+					
 			rank_user_sim[next_userid]=count
 			#pprint.pprint(len(rank_user_sim))
 		rank_list=[]
