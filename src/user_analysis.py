@@ -16,21 +16,21 @@ def analysis():
     home_dic = home_recommendation.get_home_location()
     
     result = {}
-    result["Home"] = []
+    result["home"] = []
     result["visitor"] = []
-    result["nonvisitor"] = []
+    result["non_visitor"] = []
 
     for user_id,user_location in user_dic.items():
         for single_location in user_location:
             for location_id,location_content in home_dic.items():
-                if user_id not in result["Home"]:
+                if user_id not in result["home"]:
                     if single_location == location_id:
-                        result["Home"].append(user_id)
+                        result["home"].append(user_id)
     
     for user_id,total_location in user_data.items():
-        if user_id not in result["Home"]:
+        if user_id not in result["home"]:
             if len(total_location) > nonvisitor_threshold:
-                result["nonvisitor"].append(user_id)
+                result["non_visitor"].append(user_id)
             else:
                 result["visitor"].append(user_id)
 

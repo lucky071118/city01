@@ -13,7 +13,7 @@ RESULT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'result.t
 ANSWER_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), READ_FILE_DIR, 'answer.txt')
 
 
-def test_result():
+def test_result(user_category_dict):
     output_result_dict, answer_dict = read_file()
     index_list, user_rank_dict = validation(output_result_dict, answer_dict)
     index_counter = collections.Counter(index_list)
@@ -28,7 +28,25 @@ def test_result():
     for counter_tuple in counter_list:
         print('rank index = ', counter_tuple[0], end='   ')
         print('number of people = ', counter_tuple[1], end='   ')
-        print('name = ', user_rank_dict[counter_tuple[0]])
+        print('name = ',end='   ')
+        for user_name in user_rank_dict[counter_tuple[0]]:
+            print('(' + user_name,end=', ')
+            for category, user_list in user_category_dict.items():
+                if user_name in user_list:
+                    print(category + ')', end=' ')
+        print(' ')
+    
+    catagory_user_rank = {}
+    for index_rank, user_list, in user_rank_dict.items():
+        for user_name in user_list:
+            for catagory, catagory_user_list in user_category_dict.items():
+                if user_name in catagory_user_list:
+                    catagory_user_rank.setdefault(catagory, []).append(index_rank)
+    
+    for catagory, catagory_rank in catagory_user_rank.items():
+        print(catagory,' = ', sum(catagory_rank)/len(catagory_rank))
+
+
         
     # pprint.pprint(counter_list)
     index_dict = {}
